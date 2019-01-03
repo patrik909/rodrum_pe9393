@@ -13,13 +13,7 @@
         <div class="LED" v-if="index === CurrentStep"></div>
       </div>
     </div>
-
-    <div class="Triggers">
-      <KickDrum :Step="CurrentStep" :Triggers="KickSeq" />
-      <button v-for="index in PatternLength" v-on:click="TriggerKick($event, index)"></button>
-    </div>
-
-    <div class="Triggers KickSequence hide">
+    <div class="Triggers KickSequence">
       <KickDrum :Step="CurrentStep" :Triggers="KickSeq" />
       <button v-for="index in PatternLength" v-on:click="TriggerKick($event, index)"></button>
     </div>
