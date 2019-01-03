@@ -8,11 +8,11 @@
 
 export default {
   name: 'KickDrum',
-  props: ['Step', 'Triggers'],
+  props: ['Step', 'Triggers', 'Volume'],
   data() {
     return {
       TriggerSteps: [],
-      CurrentStep: 0
+      CurrentStep: 0,
     }
   },
   watch: {
@@ -25,6 +25,11 @@ export default {
     },
     Triggers: function (Trigg) {
       this.TriggerSteps = Trigg;
+    },
+    Volume: function (Vol) {
+      const audio = document.getElementById('BassDrum');
+      audio.volume = Vol/100;
+      // this.InstVolume = Vol;
     }
   },
   methods: {

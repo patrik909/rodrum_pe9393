@@ -70,8 +70,7 @@ input {
 .Drummer {
   display: flex;
   flex-direction: column;
-  padding-top: 8rem;
-  padding-bottom: 4rem;
+  padding: 8rem 1rem 4rem 1rem;
   border-radius: 6px;
   border-left: #6e6b58 1.5rem solid;
   border-right: #6e6b58 1.5rem solid;

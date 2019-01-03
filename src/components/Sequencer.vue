@@ -2,10 +2,10 @@
   <div class="Sequencer">
     <div>
     <div class="SelectInstruments">
-      <button v-on:click="ShowSequence('KickSequence')"><p>BD</p></button>
-      <button v-on:click="ShowSequence('SnareSequence')"><p>SD</p></button>
-      <button v-on:click="ShowSequence('HihatSequence')"><p>HH</p></button>
-      <button v-on:click="ShowSequence('RideSequence')"><p>RI</p></button>
+      <button v-on:click="ShowSequence(KickSeq, 'KickSeq')"><p>BD</p></button>
+      <button v-on:click="ShowSequence(SnareSeq, 'SnareSeq')"><p>SD</p></button>
+      <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq')"><p>HH</p></button>
+      <button v-on:click="ShowSequence(RideSeq, 'RideSeq')"><p>RI</p></button>
     </div>
     </div>
     <div class="StepCounter">
@@ -13,22 +13,21 @@
         <div class="LED" v-if="index === CurrentStep"></div>
       </div>
     </div>
-    <div class="Triggers KickSequence">
+
+    <div class="Audio">
       <KickDrum :Step="CurrentStep" :Triggers="KickSeq" />
-      <button v-for="index in PatternLength" v-on:click="TriggerKick($event, index)"></button>
-    </div>
-    <div class="Triggers SnareSequence hide">
       <SnareDrum :Step="CurrentStep" :Triggers="SnareSeq" />
-      <button v-for="index in PatternLength" v-on:click="TriggerSnare($event, index)"></button>
-    </div>
-    <div class="Triggers ClsdHihatSequence hide">
       <ClsdHihat :Step="CurrentStep" :Triggers="ClsdHihatSeq" />
-      <button v-for="index in PatternLength" v-on:click="TriggerClsdHihat($event, index)"></button>
-    </div>
-    <div class="Triggers RideSequence hide">
       <Ride :Step="CurrentStep" :Triggers="RideSeq" />
-      <button v-for="index in PatternLength" v-on:click="TriggerRide($event, index)"></button>
     </div>
+
+    <div id="Triggers">
+      <button v-for="index in PatternLength" v-on:click="HandleSequence($event, index)"></button>
+    </div>
+    <div id="StepIndexes">
+      <p v-for="index in PatternLength">{{index}}</p>
+    </div>
+
   </div>
 </template>
 
@@ -52,6 +51,7 @@ export default {
     return {
       CurrentStep: 0,
       PatternLength: 16,
+      DisplayingSeq: 'KickSeq',
       KickSeq: [],
       SnareSeq: [],
       LowTomSeq: [],
@@ -74,57 +74,46 @@ export default {
     }
   },
   methods: {
-    TriggerKick (event, TriggerValue) {      
+    ShowSequence (Seq, SeqClass) {
+      this.DisplayingSeq = SeqClass
+
+      const TriggerButtons = document.getElementById('Triggers').children;
+      for (let i = 0; i < TriggerButtons.length; i++) {
+        TriggerButtons[i].classList.remove('Triggered');
+      }
+      for (let i = 0; i < Seq.length; i++) {
+        let index = Seq[i] - 1;
+        TriggerButtons[index].classList.add('Triggered');
+
+      }
+
+    },
+    HandleSequence (event, TriggerStep) {
+      let Seq = [];
       const TriggerButton = event.target;
       TriggerButton.classList.toggle('Triggered');
-
-      if (this.KickSeq.indexOf(TriggerValue) > -1) {
-        this.KickSeq = this.KickSeq.filter(value => value !== TriggerValue);
-      } else {
-        this.KickSeq.push(TriggerValue);
+      if (this.DisplayingSeq === 'KickSeq') {
+        Seq = this.KickSeq;
+      } else if (this.DisplayingSeq === 'SnareSeq') {
+        Seq = this.SnareSeq;
+      } else if (this.DisplayingSeq === 'ClsdHihatSeq') {
+        Seq = this.ClsdHihatSeq;
+      } else if (this.DisplayingSeq === 'RideSeq') {
+        Seq = this.RideSeq;
       }
-    },
-    TriggerSnare (event, TriggerValue) {    
 
-      const TriggerButton = event.target;
-      TriggerButton.classList.toggle('Triggered');
-      
-      if (this.SnareSeq.indexOf(TriggerValue) > -1) {
-        this.SnareSeq = this.SnareSeq.filter(value => value !== TriggerValue);
-      } else {
-        this.SnareSeq.push(TriggerValue);
-      }
-    },
-    TriggerClsdHihat (event, TriggerValue) {    
-
-      const TriggerButton = event.target;
-      TriggerButton.classList.toggle('Triggered');
-      
-      if (this.ClsdHihatSeq.indexOf(TriggerValue) > -1) {
-        this.ClsdHihatSeq = this.ClsdHihatSeq.filter(value => value !== TriggerValue);
-      } else {
-        this.ClsdHihatSeq.push(TriggerValue);
-      }
-    },
-    TriggerRide (event, TriggerValue) {    
-
-      const TriggerButton = event.target;
-      TriggerButton.classList.toggle('Triggered');
-      
-      if (this.RideSeq.indexOf(TriggerValue) > -1) {
-        this.RideSeq = this.RideSeq.filter(value => value !== TriggerValue);
-      } else {
-        this.RideSeq.push(TriggerValue);
-      }
-    },
-    ShowSequence (SeqClass) {
-      const Sequences = document.getElementsByClassName('Triggers');
-      for (let i = 0; i < Sequences.length; i++) {
-        if (Sequences[i].classList[1].indexOf(SeqClass) > -1) {
-          Sequences[i].classList.remove('hide');
-        } else {
-          Sequences[i].classList.add('hide');
+      if (Seq.indexOf(TriggerStep) > -1) {
+        if (this.DisplayingSeq === 'KickSeq') {
+          this.KickSeq = Seq.filter(value => value !== TriggerStep);
+        } else if (this.DisplayingSeq === 'SnareSeq') {
+          this.SnareSeq = Seq.filter(value => value !== TriggerStep);
+        } else if (this.DisplayingSeq === 'ClsdHihatSeq') {
+          this.ClsdHihatSeq = Seq.filter(value => value !== TriggerStep);
+        } else if (this.DisplayingSeq === 'RideSeq') {
+          this.RideSeq = Seq.filter(value => value !== TriggerStep);
         }
+      } else {
+        Seq.push(TriggerStep);
       }
     }
   }
@@ -135,7 +124,8 @@ export default {
 <style scoped>
 
 .StepCounter,
-.Triggers {
+#Triggers,
+#StepIndexes {
   display: flex;
 }
 
@@ -154,7 +144,7 @@ export default {
   background: red;
  }
 
-.Triggers button {
+#Triggers button {
   margin: 0 1.2rem;
   height: 5.2rem;
   width: 5.2rem;
@@ -163,8 +153,16 @@ export default {
   transition: 150ms;
 }
 
-.Triggers .Triggered {
+#Triggers .Triggered {
   background: red;
+}
+
+#StepIndexes p {
+  padding: 0.4rem 0;
+  width: 7.6rem;
+  background: #4d565d;
+  color: #e5dad4;
+  text-align: center;
 }
 
 </style>

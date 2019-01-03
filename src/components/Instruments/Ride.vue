@@ -8,7 +8,7 @@
 
 export default {
   name: 'Ride',
-  props: ['Step', 'Triggers'],
+   props: ['Step', 'Triggers', 'Volume'],
   data() {
     return {
       TriggerSteps: [],
@@ -24,8 +24,12 @@ export default {
       }
     },
     Triggers: function (Trigg) {
-      console.log(Trigg)
       this.TriggerSteps = Trigg;
+    },
+    Volume: function (Vol) {
+      const audio = document.getElementById('Ride');
+      audio.volume = Vol/100;
+      // this.InstVolume = Vol;
     }
   },
   methods: {
