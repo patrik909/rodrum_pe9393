@@ -1,13 +1,13 @@
 <template>
-  <audio controls preload="auto" id="ClsdHihat">
-    <source src="../../assets/clsdhihat.mp3" type="audio/mpeg">
+  <audio controls preload="auto" id="MidTom">
+    <source src="../../assets/midtom.mp3" type="audio/mpeg">
   </audio>
 </template>
 
 <script>
 
 export default {
-  name: 'ClsdHihat',
+  name: 'MidTom',
   props: ['Step', 'Triggers', 'Volume', 'Tune'],
   data() {
     return {
@@ -18,7 +18,7 @@ export default {
   watch: {
     Step: function (StepValue) {
       if (this.TriggerSteps.indexOf(StepValue) > -1) {
-        const audio = document.getElementById('ClsdHihat');
+        const audio = document.getElementById('MidTom');
         audio.currentTime = 0;
         audio.play();
       }
@@ -27,13 +27,13 @@ export default {
       this.TriggerSteps = Trigg;
     },
     Volume: function (Vol) {
-      const audio = document.getElementById('ClsdHihat');
+      const audio = document.getElementById('MidTom');
       audio.volume = Vol/100;
       // this.InstVolume = Vol;
     },
     Tune: function (TuneVal) {
       console.log(TuneVal)
-      const audio = document.getElementById('ClsdHihat');
+      const audio = document.getElementById('MidTom');
 
       audio.playbackRate = TuneVal/100;
     }

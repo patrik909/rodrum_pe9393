@@ -112,6 +112,14 @@ p {
   width: 5.2rem;
   border-radius: 0.6rem;
   background: #fdf3da;
+  box-shadow: 0 2px #c4bca8;
+  border: 1px solid #ddd4bc;
+  border-bottom: none;
+  transition: 150ms;
+}
+
+.ClockButtons button:hover {
+  background: #f2e8d0;
 }
 
 .BPM {

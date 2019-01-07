@@ -1,11 +1,18 @@
 <template>
   <div class="Sequencer">
     <div>
-    <div class="SelectInstruments">
-      <button v-on:click="ShowSequence(KickSeq, 'KickSeq')"><p>BD</p></button>
-      <button v-on:click="ShowSequence(SnareSeq, 'SnareSeq')"><p>SD</p></button>
-      <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq')"><p>HH</p></button>
-      <button v-on:click="ShowSequence(RideSeq, 'RideSeq')"><p>RI</p></button>
+    <div id="SelectInstruments">
+      <button class="Active" v-on:click="ShowSequence(KickSeq, 'KickSeq', $event)">BD</button>
+      <button v-on:click="ShowSequence(SnareSeq, 'SnareSeq', $event)">SD</button>
+      <button v-on:click="ShowSequence(LowTomSeq, 'LowTomSeq', $event)">LT</button>
+      <button v-on:click="ShowSequence(MidTomSeq, 'MidTomSeq', $event)">MT</button>
+      <button v-on:click="ShowSequence(HiTomSeq, 'HiTomSeq', $event)">HT</button>
+      <button v-on:click="ShowSequence(RimShotSeq, 'RimShotSeq', $event)">RS</button>
+      <button v-on:click="ShowSequence(HandClapSeq, 'HandClapSeq', $event)">HC</button>
+      <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq', $event)">HH CD</button>
+      <button v-on:click="ShowSequence(OpenHihatSeq, 'OpenHihatSeq', $event)">HH OP</button>
+      <button v-on:click="ShowSequence(CrashSeq, 'CrashSeq', $event)">CR</button>
+      <button v-on:click="ShowSequence(RideSeq, 'RideSeq', $event)">RI</button>
     </div>
     </div>
     <div class="StepCounter">
@@ -17,7 +24,14 @@
     <div class="Audio">
       <KickDrum :Step="CurrentStep" :Triggers="KickSeq" />
       <SnareDrum :Step="CurrentStep" :Triggers="SnareSeq" />
+      <LowTom :Step="CurrentStep" :Triggers="LowTomSeq" />
+      <MidTom :Step="CurrentStep" :Triggers="MidTomSeq" />
+      <HiTom :Step="CurrentStep" :Triggers="HiTomSeq" />
+      <RimShot :Step="CurrentStep" :Triggers="RimShotSeq" />
+      <HandClap :Step="CurrentStep" :Triggers="HandClapSeq" />
       <ClsdHihat :Step="CurrentStep" :Triggers="ClsdHihatSeq" />
+      <OpenHihat :Step="CurrentStep" :Triggers="OpenHihatSeq" />
+      <Crash :Step="CurrentStep" :Triggers="CrashSeq" />
       <Ride :Step="CurrentStep" :Triggers="RideSeq" />
     </div>
 
@@ -35,7 +49,14 @@
 
 import KickDrum from './Instruments/KickDrum'
 import SnareDrum from './Instruments/SnareDrum'
+import LowTom from './Instruments/LowTom'
+import MidTom from './Instruments/MidTom'
+import HiTom from './Instruments/HiTom'
+import RimShot from './Instruments/RimShot'
+import HandClap from './Instruments/HandClap'
 import ClsdHihat from './Instruments/ClsdHihat'
+import OpenHihat from './Instruments/OpenHihat'
+import Crash from './Instruments/Crash'
 import Ride from './Instruments/Ride'
 
 export default {
@@ -43,7 +64,14 @@ export default {
   components: {
     KickDrum,
     SnareDrum,
+    LowTom,
+    MidTom,
+    HiTom,
+    RimShot,
+    HandClap,
     ClsdHihat,
+    OpenHihat,
+    Crash,
     Ride
   },
   props: ['Step'],
@@ -57,63 +85,98 @@ export default {
       LowTomSeq: [],
       MidTomSeq: [],
       HiTomSeq: [],
-      RimSeq: [],
-      ClapSeq: [],
+      RimShotSeq: [],
+      HandClapSeq: [],
       ClsdHihatSeq: [],
       OpenHihatSeq: [],
-      CymSeq: [],
+      CrashSeq: [],
       RideSeq: [],
     }
   },
   created: function () {
-    this.$emit('HandlePatternLength', this.PatternLength);
+    this.$emit('HandlePatternLength', this.PatternLength)
   },
   watch: {
     Step: function (StepValue) {
-      this.CurrentStep = StepValue;
+      this.CurrentStep = StepValue
     }
   },
   methods: {
-    ShowSequence (Seq, SeqClass) {
+    ShowSequence (Seq, SeqClass, event) {
+      const InstButtons = document.getElementById('SelectInstruments').children
+      for (let i = 0; i < InstButtons.length; i++) {
+        InstButtons[i].classList.remove('Active')
+      }
+      event.target.classList.add('Active')
+
       this.DisplayingSeq = SeqClass
 
-      const TriggerButtons = document.getElementById('Triggers').children;
+      const TriggerButtons = document.getElementById('Triggers').children
       for (let i = 0; i < TriggerButtons.length; i++) {
-        TriggerButtons[i].classList.remove('Triggered');
+        TriggerButtons[i].classList.remove('Triggered')
       }
       for (let i = 0; i < Seq.length; i++) {
-        let index = Seq[i] - 1;
-        TriggerButtons[index].classList.add('Triggered');
+        let index = Seq[i] - 1
+        TriggerButtons[index].classList.add('Triggered')
 
       }
 
     },
     HandleSequence (event, TriggerStep) {
-      let Seq = [];
-      const TriggerButton = event.target;
-      TriggerButton.classList.toggle('Triggered');
+      let Seq = []
+      const TriggerButton = event.target
+      TriggerButton.classList.toggle('Triggered')
+
       if (this.DisplayingSeq === 'KickSeq') {
-        Seq = this.KickSeq;
+        Seq = this.KickSeq
       } else if (this.DisplayingSeq === 'SnareSeq') {
-        Seq = this.SnareSeq;
+        Seq = this.SnareSeq
+      } else if (this.DisplayingSeq === 'LowTomSeq') {
+        Seq = this.LowTomSeq
+      } else if (this.DisplayingSeq === 'MidTomSeq') {
+        Seq = this.MidTomSeq
+      } else if (this.DisplayingSeq === 'HiTomSeq') {
+        Seq = this.HiTomSeq
+      } else if (this.DisplayingSeq === 'HandClapSeq') {
+        Seq = this.HandClapSeq
+      } else if (this.DisplayingSeq === 'RimShotSeq') {
+        Seq = this.RimShotSeq
       } else if (this.DisplayingSeq === 'ClsdHihatSeq') {
-        Seq = this.ClsdHihatSeq;
+        Seq = this.ClsdHihatSeq
+      } else if (this.DisplayingSeq === 'OpenHihatSeq') {
+        Seq = this.OpenHihatSeq
+      } else if (this.DisplayingSeq === 'CrashSeq') {
+        Seq = this.CrashSeq
       } else if (this.DisplayingSeq === 'RideSeq') {
-        Seq = this.RideSeq;
-      }
+        Seq = this.RideSeq
+      } 
 
       if (Seq.indexOf(TriggerStep) > -1) {
         if (this.DisplayingSeq === 'KickSeq') {
-          this.KickSeq = Seq.filter(value => value !== TriggerStep);
+          this.KickSeq = Seq.filter(value => value !== TriggerStep)
         } else if (this.DisplayingSeq === 'SnareSeq') {
-          this.SnareSeq = Seq.filter(value => value !== TriggerStep);
+          this.SnareSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'LowTomSeq') {
+          this.LowTomSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'MidTomSeq') {
+          this.MidTomSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'HiTomSeq') {
+          this.HiTomSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'HandClapSeq') {
+          this.HandClapSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'RimShotSeq') {
+          this.RimShotSeq = Seq.filter(value => value !== TriggerStep)
         } else if (this.DisplayingSeq === 'ClsdHihatSeq') {
-          this.ClsdHihatSeq = Seq.filter(value => value !== TriggerStep);
+          this.ClsdHihatSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'OpenHihatSeq') {
+          this.OpenHihatSeq = Seq.filter(value => value !== TriggerStep)
+        } else if (this.DisplayingSeq === 'CrashSeq') {
+          this.CrashSeq = Seq.filter(value => value !== TriggerStep)
         } else if (this.DisplayingSeq === 'RideSeq') {
-          this.RideSeq = Seq.filter(value => value !== TriggerStep);
+          this.RideSeq = Seq.filter(value => value !== TriggerStep)
         }
       } else {
-        Seq.push(TriggerStep);
+        Seq.push(TriggerStep)
       }
     }
   }
@@ -150,11 +213,18 @@ export default {
   width: 5.2rem;
   border-radius: 0.6rem;
   background: #fdf3da;
+  box-shadow: 0 2px #c4bca8;
+  border: 1px solid #ddd4bc;
+  border-bottom: none;
   transition: 150ms;
 }
 
+#Triggers button:hover {
+  background: #f2e8d0;
+}
+
 #Triggers .Triggered {
-  background: red;
+  background: red !important;
 }
 
 #StepIndexes p {
@@ -163,6 +233,41 @@ export default {
   background: #4d565d;
   color: #e5dad4;
   text-align: center;
+}
+
+#StepIndexes p:first-child {
+  margin-left: 1.2rem;
+  width: 6.4rem;
+}
+
+#StepIndexes p:last-child {
+  margin-right: 1.2rem;
+  width: 6.4rem;
+}
+
+#SelectInstruments {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: -5.2rem;
+  right: 0;
+  height: 5.2rem;
+  width: 92rem;
+}
+
+#SelectInstruments button {
+  height: 4rem;
+  width: 6rem;
+  margin: 0 0.4rem;
+  border-radius: 0.6rem;
+  background: #4d565d;
+  color: #e5dad4;
+  font-weight: 700;
+  transition: 150ms;
+}
+
+#SelectInstruments button.Active {
+  background: black;
 }
 
 </style>

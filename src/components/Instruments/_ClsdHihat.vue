@@ -8,11 +8,11 @@
 
 export default {
   name: 'ClsdHihat',
-  props: ['Step', 'Triggers', 'Volume', 'Tune'],
+  props: ['Step', 'Triggers', 'Volume'],
   data() {
     return {
       TriggerSteps: [],
-      CurrentStep: 0,
+      CurrentStep: 0
     }
   },
   watch: {
@@ -30,12 +30,6 @@ export default {
       const audio = document.getElementById('ClsdHihat');
       audio.volume = Vol/100;
       // this.InstVolume = Vol;
-    },
-    Tune: function (TuneVal) {
-      console.log(TuneVal)
-      const audio = document.getElementById('ClsdHihat');
-
-      audio.playbackRate = TuneVal/100;
     }
   },
   methods: {
