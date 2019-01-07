@@ -36,6 +36,13 @@ export default {
       IsClockRunning: false
     };
   },
+  created: function () {
+      window.addEventListener('keydown', (event) => {
+        if (event.keyCode == '32') {
+          this.StartButton ()
+        }
+      });
+  },
   watch: {
     Length: function (LengthValue) {
       this.PatternLength = LengthValue;

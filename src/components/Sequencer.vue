@@ -2,6 +2,7 @@
   <div class="Sequencer">
     <div>
     <div id="SelectInstruments">
+      <p>Select Intrument</p>
       <button class="Active" v-on:click="ShowSequence(KickSeq, 'KickSeq', $event)">BD</button>
       <button v-on:click="ShowSequence(SnareSeq, 'SnareSeq', $event)">SD</button>
       <button v-on:click="ShowSequence(LowTomSeq, 'LowTomSeq', $event)">LT</button>
@@ -9,8 +10,8 @@
       <button v-on:click="ShowSequence(HiTomSeq, 'HiTomSeq', $event)">HT</button>
       <button v-on:click="ShowSequence(RimShotSeq, 'RimShotSeq', $event)">RS</button>
       <button v-on:click="ShowSequence(HandClapSeq, 'HandClapSeq', $event)">HC</button>
-      <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq', $event)">HH CD</button>
-      <button v-on:click="ShowSequence(OpenHihatSeq, 'OpenHihatSeq', $event)">HH OP</button>
+      <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq', $event)">CD HH</button>
+      <button v-on:click="ShowSequence(OpenHihatSeq, 'OpenHihatSeq', $event)">OP HH</button>
       <button v-on:click="ShowSequence(CrashSeq, 'CrashSeq', $event)">CR</button>
       <button v-on:click="ShowSequence(RideSeq, 'RideSeq', $event)">RI</button>
     </div>
@@ -75,7 +76,7 @@ export default {
     Ride
   },
   props: ['Step'],
-  data() {
+  data () {
     return {
       CurrentStep: 0,
       PatternLength: 16,
@@ -90,7 +91,7 @@ export default {
       ClsdHihatSeq: [],
       OpenHihatSeq: [],
       CrashSeq: [],
-      RideSeq: [],
+      RideSeq: []
     }
   },
   created: function () {
@@ -120,7 +121,6 @@ export default {
         TriggerButtons[index].classList.add('Triggered')
 
       }
-
     },
     HandleSequence (event, TriggerStep) {
       let Seq = []
@@ -149,7 +149,7 @@ export default {
         Seq = this.CrashSeq
       } else if (this.DisplayingSeq === 'RideSeq') {
         Seq = this.RideSeq
-      } 
+      }
 
       if (Seq.indexOf(TriggerStep) > -1) {
         if (this.DisplayingSeq === 'KickSeq') {
@@ -248,21 +248,23 @@ export default {
 #SelectInstruments {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   position: absolute;
   top: -5.2rem;
-  right: 0;
+  right: 0rem;
   height: 5.2rem;
   width: 92rem;
 }
 
 #SelectInstruments button {
   height: 4rem;
-  width: 6rem;
-  margin: 0 0.4rem;
+  width: 5.2rem;
+  margin: 0 1.2rem;
   border-radius: 0.6rem;
   background: #4d565d;
   color: #e5dad4;
-  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
   transition: 150ms;
 }
 
