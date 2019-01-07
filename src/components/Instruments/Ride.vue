@@ -9,37 +9,31 @@
 export default {
   name: 'Ride',
   props: ['Step', 'Triggers', 'Volume', 'Tune'],
-  data() {
+  data () {
     return {
       TriggerSteps: [],
-      CurrentStep: 0,
+      CurrentStep: 0
     }
   },
   watch: {
     Step: function (StepValue) {
       if (this.TriggerSteps.indexOf(StepValue) > -1) {
-        const audio = document.getElementById('Ride');
-        audio.currentTime = 0;
-        audio.play();
+        const audio = document.getElementById('Ride')
+        audio.currentTime = 0
+        audio.play()
       }
     },
     Triggers: function (Trigg) {
-      this.TriggerSteps = Trigg;
+      this.TriggerSteps = Trigg
     },
     Volume: function (Vol) {
-      const audio = document.getElementById('Ride');
-      audio.volume = Vol/100;
-      // this.InstVolume = Vol;
+      const audio = document.getElementById('Ride')
+      audio.volume = Vol / 100
     },
     Tune: function (TuneVal) {
-      console.log(TuneVal)
-      const audio = document.getElementById('Ride');
-
-      audio.playbackRate = TuneVal/100;
+      const audio = document.getElementById('Ride')
+      audio.playbackRate = TuneVal / 100
     }
-  },
-  methods: {
-
   }
 }
 

@@ -12,11 +12,11 @@
     </div>
     <div class="BPM">
       <p>Meas/Tempo</p>
-      <input 
-        type="text" 
+      <input
+        type="text"
         v-on:change="HandleBPM"
         :value="BPM"
-      /> 
+      />
       <div>
       </div>
     </div>
@@ -28,66 +28,66 @@
 export default {
   name: 'Clock',
   props: ['Length'],
-  data() {
+  data () {
     return {
       BPM: 120,
       PatternLength: 1,
       CurrentStep: 0,
       IsClockRunning: false
-    };
+    }
   },
   created: function () {
-      window.addEventListener('keydown', (event) => {
-        if (event.keyCode == '32') {
-          this.StartButton ()
-        }
-      });
+    window.addEventListener('keydown', (event) => {
+      if (event.keyCode === '32') {
+        this.StartButton()
+      }
+    })
   },
   watch: {
     Length: function (LengthValue) {
-      this.PatternLength = LengthValue;
+      this.PatternLength = LengthValue
     }
   },
   methods: {
     StartButton (event) {
       if (this.IsClockRunning) {
         // Pause Timeout.
-        clearTimeout(this.Clock);
+        clearTimeout(this.Clock)
         // Set Clock not running.
-        this.IsClockRunning = false;
-        this.$emit('HandleClockStep', this.CurrentStep);
+        this.IsClockRunning = false
+        this.$emit('HandleClockStep', this.CurrentStep)
       } else {
-        this.RunClock();
+        this.RunClock()
       }
     },
     StopButton (event) {
       // Pause Timeout.
-      clearTimeout(this.Clock);
+      clearTimeout(this.Clock)
       // Reset Clock step counter.
-      this.CurrentStep = 0;
+      this.CurrentStep = 0
       // Set Clock not running.
-      this.IsClockRunning = false;
-      this.$emit('HandleClockStep', this.CurrentStep);
+      this.IsClockRunning = false
+      this.$emit('HandleClockStep', this.CurrentStep)
     },
     RunClock () {
       // Set clock running.
-      this.IsClockRunning = true;
+      this.IsClockRunning = true
       if (this.CurrentStep >= this.PatternLength) {
         // Reset Clock step counter.
-        this.CurrentStep = 1;
+        this.CurrentStep = 1
       } else {
         // Add 1 to current step to move Clock forward.
-        this.CurrentStep = this.CurrentStep + 1;
+        this.CurrentStep = this.CurrentStep + 1
       }
-      this.$emit('HandleClockStep', this.CurrentStep);
+      this.$emit('HandleClockStep', this.CurrentStep)
       // 1min / BPM / steps in one beat.
       this.Clock = setTimeout(() => {
         this.RunClock()
-      }, 60000/this.BPM/4);
+      }, 60000 / this.BPM / 4)
     },
-    HandleBPM (event) {
-      const NewBPM = parseInt(event.target.value);
-      this.BPM = NewBPM;
+    HandleBPM (event) {
+      const NewBPM = parseInt(event.target.value)
+      this.BPM = NewBPM
     }
   }
 }

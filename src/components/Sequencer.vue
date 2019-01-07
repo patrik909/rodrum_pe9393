@@ -2,22 +2,26 @@
   <div class="Sequencer">
     <div>
     <div id="SelectInstruments">
-      <p>Select Intrument</p>
-      <button class="Active" v-on:click="ShowSequence(KickSeq, 'KickSeq', $event)">BD</button>
-      <button v-on:click="ShowSequence(SnareSeq, 'SnareSeq', $event)">SD</button>
-      <button v-on:click="ShowSequence(LowTomSeq, 'LowTomSeq', $event)">LT</button>
-      <button v-on:click="ShowSequence(MidTomSeq, 'MidTomSeq', $event)">MT</button>
-      <button v-on:click="ShowSequence(HiTomSeq, 'HiTomSeq', $event)">HT</button>
-      <button v-on:click="ShowSequence(RimShotSeq, 'RimShotSeq', $event)">RS</button>
-      <button v-on:click="ShowSequence(HandClapSeq, 'HandClapSeq', $event)">HC</button>
-      <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq', $event)">CD HH</button>
-      <button v-on:click="ShowSequence(OpenHihatSeq, 'OpenHihatSeq', $event)">OP HH</button>
-      <button v-on:click="ShowSequence(CrashSeq, 'CrashSeq', $event)">CR</button>
-      <button v-on:click="ShowSequence(RideSeq, 'RideSeq', $event)">RI</button>
+      <div id="SelectInstrumentsTitle">
+        <div class="line"></div><p>Select instrument</p><div class="line"></div>
+      </div>
+      <div id="InstrumentButtons">
+        <button class="Active" v-on:click="ShowSequence(KickSeq, 'KickSeq', $event)">BD</button>
+        <button v-on:click="ShowSequence(SnareSeq, 'SnareSeq', $event)">SD</button>
+        <button v-on:click="ShowSequence(LowTomSeq, 'LowTomSeq', $event)">LT</button>
+        <button v-on:click="ShowSequence(MidTomSeq, 'MidTomSeq', $event)">MT</button>
+        <button v-on:click="ShowSequence(HiTomSeq, 'HiTomSeq', $event)">HT</button>
+        <button v-on:click="ShowSequence(RimShotSeq, 'RimShotSeq', $event)">RS</button>
+        <button v-on:click="ShowSequence(HandClapSeq, 'HandClapSeq', $event)">CP</button>
+        <button v-on:click="ShowSequence(ClsdHihatSeq, 'ClsdHihatSeq', $event)">CH</button>
+        <button v-on:click="ShowSequence(OpenHihatSeq, 'OpenHihatSeq', $event)">OH</button>
+        <button v-on:click="ShowSequence(CrashSeq, 'CrashSeq', $event)">CR</button>
+        <button v-on:click="ShowSequence(RideSeq, 'RideSeq', $event)">RI</button>
+      </div>
     </div>
     </div>
     <div class="StepCounter">
-      <div class="Step" v-for="index in PatternLength">
+      <div class="Step" v-for="index in PatternLength" v-bind:key="index">
         <div class="LED" v-if="index === CurrentStep"></div>
       </div>
     </div>
@@ -37,10 +41,10 @@
     </div>
 
     <div id="Triggers">
-      <button v-for="index in PatternLength" v-on:click="HandleSequence($event, index)"></button>
+      <button v-for="index in PatternLength" v-on:click="HandleSequence($event, index)" v-bind:key="index"></button>
     </div>
     <div id="StepIndexes">
-      <p v-for="index in PatternLength">{{index}}</p>
+      <p v-for="index in PatternLength" v-bind:key="index">{{index}}</p>
     </div>
 
   </div>
@@ -104,7 +108,7 @@ export default {
   },
   methods: {
     ShowSequence (Seq, SeqClass, event) {
-      const InstButtons = document.getElementById('SelectInstruments').children
+      const InstButtons = document.getElementById('InstrumentButtons').children
       for (let i = 0; i < InstButtons.length; i++) {
         InstButtons[i].classList.remove('Active')
       }
@@ -119,7 +123,6 @@ export default {
       for (let i = 0; i < Seq.length; i++) {
         let index = Seq[i] - 1
         TriggerButtons[index].classList.add('Triggered')
-
       }
     },
     HandleSequence (event, TriggerStep) {
@@ -247,29 +250,76 @@ export default {
 
 #SelectInstruments {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column;
   position: absolute;
-  top: -5.2rem;
-  right: 0rem;
-  height: 5.2rem;
-  width: 92rem;
+  top: -7.7rem;
+  right: 1.2rem;
+  height: 7.7rem;
 }
 
-#SelectInstruments button {
-  height: 4rem;
+#SelectInstrumentsTitle {
+  display: flex;
+  height: 3.5rem;
+}
+
+#SelectInstrumentsTitle p {
+  margin: 0.6rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#SelectInstrumentsTitle .line {
+  border-top: 1px solid black;
+  margin-top: 1rem;
+  height: 30%;
+  width: 100%;
+}
+
+#SelectInstrumentsTitle .line:first-child {
+  border-left: 1px solid black;
+}
+
+#SelectInstrumentsTitle .line:last-child {
+  border-right: 1px solid black;
+}
+
+#InstrumentButtons {
+  display: flex;
+  justify-content: flex-end;
+  height: 4.2rem;
+  width: 100%;
+}
+
+#InstrumentButtons button {
+  height: 100%;
   width: 5.2rem;
   margin: 0 1.2rem;
-  border-radius: 0.6rem;
-  background: #4d565d;
+  background: black;
   color: #e5dad4;
-  font-size: 0.8rem;
-  letter-spacing: 0.5px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  border-radius: 0.6rem;
   transition: 150ms;
 }
 
-#SelectInstruments button.Active {
-  background: black;
+#InstrumentButtons button:hover {
+  background: #3c4449;
+}
+
+#InstrumentButtons button:first-child {
+  margin-left: 0;
+}
+
+#InstrumentButtons button:last-child {
+  margin-right: 0;
+}
+
+#InstrumentButtons button.Active {
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+  background: #4d565d;
 }
 
 </style>

@@ -27,18 +27,18 @@ export default {
     Sequencer,
     Instruments
   },
-  data() {
+  data () {
     return {
       CurrentStep: 0,
       PatternLength: 1
-    };
+    }
   },
   methods: {
     HandleClockStep (ClockStep) {
-      this.CurrentStep = ClockStep;
+      this.CurrentStep = ClockStep
     },
     HandlePatternLength (Length) {
-      this.PatternLength = Length;
+      this.PatternLength = Length
     }
   }
 }
@@ -49,11 +49,12 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Orbitron:500');
 
 html {
-  font-size: 9px;
+  font-size: 8px;
 }
 
 body {
   margin: 0;
+  background: #d8d8d8;
 }
 
 button,
@@ -85,7 +86,7 @@ div {
   border-radius: 6px;
   border-left: #6e6b58 1.5rem solid;
   border-right: #6e6b58 1.5rem solid;
-  box-shadow: 0px 0px 60px -30px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 80px -30px rgba(0,0,0,1);
   background: #e5dad4;
   font-family: 'Helvetica';
 }
@@ -106,6 +107,30 @@ header div {
   justify-content: space-between;
   margin: 0 1.4rem;
   color: #4d565d;
+}
+
+@media screen and (orientation: portrait) {
+  .Drummer {
+    transform: rotate(90deg);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 4.5px;
+  }
+}
+
+@media screen and (min-width: 600px) and (orientation: portrait) {
+    html {
+    font-size: 7.5px;
+  }
+}
+
+@media screen and (min-width: 600px) and (orientation: portrait) {
+    html {
+    font-size: 9px;
+  }
 }
 
 </style>
